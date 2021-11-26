@@ -3,6 +3,7 @@ export class Computation {
     this.in = 0;
     this.total = 0;
     this.pi = undefined; 
+    this.piString = undefined;
     this.pCenter = [0.5, 0.5];
     this.pRandom = undefined;
     this.isIn = undefined
@@ -19,6 +20,7 @@ export class Computation {
        }
        this.total ++
        this.pi = 4 * this.in/this.total
+       this.piString = this.pi.toFixed(5);
 
    }
    getData(){
