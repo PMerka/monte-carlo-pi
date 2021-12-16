@@ -1,9 +1,7 @@
 <template>
-<br>
 <div ref="canvasFrame" class="myDiv">
 <canvas ref="myCanvas" class="myCanvasId"></canvas>
 </div>
-<br>
 </template>
 
 <script>
@@ -11,7 +9,7 @@ import { ref } from '@vue/reactivity'
 import {  onMounted, watch } from '@vue/runtime-core'
 
 export default {
-props: ['myComputation'],
+props: ['myComputation', 'colorSettingOfPoints'],
 setup(props){
   const myCanvas = ref(null);
   const canvasFrame = ref(null);
@@ -19,38 +17,38 @@ setup(props){
   let size = null
 
   onMounted(() => {
-    resize()
-    
-    let resizer = new ResizeObserver(resize);
+    setSize()  
+    let resizer = new ResizeObserver(setSize);
     resizer.observe(canvasFrame.value)
   })
 
-  function resize() {
+  function setSize() {
     if (canvasFrame.value !== null) {
-    
     size = 0.9*canvasFrame.value.clientWidth
     myCanvas.value.height = size
     myCanvas.value.width = size
+    drawUnitCircle()
+    }
+  }
+
+  watch(props.myComputation, drawThePoint)
+
+  function drawUnitCircle() {
     ctx = myCanvas.value.getContext("2d");
     ctx.beginPath();
     ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
     ctx.stroke();
-    }
-  }
+  } 
 
-
-
-  watch(props.myComputation, draw)
-
-  function draw(){
+  function drawThePoint(){
     let point = props.myComputation.pRandom
     ctx.beginPath();
     ctx.arc(point[0]*size, point[1]*size, 1/100*size, 0, 2 * Math.PI);
     if(props.myComputation.isIn){
-    ctx.fillStyle = "rgba(0, 130, 0, 0.5)";
+    ctx.fillStyle = props.colorSettingOfPoints.colorIn;
     }
     else{
-      ctx.fillStyle = "rgb(130, 0, 0, 0.5)";
+      ctx.fillStyle = props.colorSettingOfPoints.colorOut;
     }
     ctx.fill();
     ctx.stroke();
@@ -68,8 +66,8 @@ setup(props){
   }
 
 .myDiv{
-  width: 40vw;
-  height: 40vw;
+  width: 50vw;
+  height: 50vw;
   min-width: 300px;
   min-height: 300px;
   border: 2px solid rgba(50, 50, 50, 0.5);

@@ -21,12 +21,5 @@ export class Computation {
        this.total ++
        this.pi = 4 * this.in/this.total
        this.piString = this.pi.toFixed(5);
-
-   }
-   getData(){
-       return {pi: this.pi, in: this.in, total: this.total}
-   }
-   getPoint(){
-       return {coordinate: this.pRandom, isIn: this.isIn}
    }
    }
